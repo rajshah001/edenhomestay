@@ -26,11 +26,22 @@ const WHATSAPP_NUMBER = "919064810826"; // Eden's WhatsApp Business (India +91)
     return /^\d{8,15}$/.test(WHATSAPP_NUMBER);
   }
 
+  function waUrl(text) {
+    return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
+  }
+
+  // Used only by elements that can't be native links (e.g. the composer's
+  // send button). A user-gesture anchor click with target="_blank" opens
+  // WhatsApp in a new tab everywhere — even where window.open is blocked —
+  // and this website always stays open.
   function openWaLink(text) {
-    const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(text);
-    // If the browser blocks the popup (common in embedded webviews), navigate directly.
-    const win = window.open(url, "_blank", "noopener");
-    if (!win) window.location.href = url;
+    const a = document.createElement("a");
+    a.href = waUrl(text);
+    a.target = "_blank";
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 
   function showPanel() {
@@ -55,15 +66,18 @@ const WHATSAPP_NUMBER = "919064810826"; // Eden's WhatsApp Business (India +91)
   }
 
   document.querySelectorAll("[data-wa]").forEach((el) => {
-    el.addEventListener("click", (e) => {
-      e.preventDefault();
-      const text = el.getAttribute("data-wa-text") || "Hi Eden! I'd like to plan a stay. 🏡";
-      if (numberReady()) {
-        openWaLink(text);
-      } else {
+    if (numberReady()) {
+      // turn it into a plain new-tab link — the browser handles everything
+      // natively (new tab, site stays open), no popup blockers involved
+      el.href = waUrl(el.getAttribute("data-wa-text") || "Hi Eden! I'd like to plan a stay. 🏡");
+      el.target = "_blank";
+      el.rel = "noopener";
+    } else {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
         showPanel();
-      }
-    });
+      });
+    }
   });
 
   if (waFab) {
