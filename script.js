@@ -467,6 +467,46 @@ const WHATSAPP_NUMBER = "919064810826"; // Eden's WhatsApp Business (India +91)
     start();
   })();
 
+  /* ---------------- Room photo lightbox ---------------- */
+  const lightbox = document.getElementById("lightbox");
+  if (lightbox) {
+    const lbImg = document.getElementById("lightboxImg");
+    const lbCap = document.getElementById("lightboxCap");
+    const lbRaw = document.getElementById("lightboxRaw");
+    const lbClose = document.getElementById("lightboxClose");
+
+    function openLightbox(img) {
+      const full = img.currentSrc || img.src;
+      lbImg.src = full;
+      lbImg.alt = img.alt;
+      lbCap.textContent = img.closest(".room")?.querySelector("h3")?.textContent || "";
+      lbRaw.href = full;
+      lightbox.hidden = false;
+      document.body.style.overflow = "hidden";
+      lbClose.focus();
+    }
+    function closeLightbox() {
+      if (lightbox.hidden) return;
+      lightbox.hidden = true;
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll(".room__art img").forEach((img) => {
+      img.setAttribute("tabindex", "0");
+      img.setAttribute("role", "button");
+      img.setAttribute("aria-label", "View larger photo");
+      img.addEventListener("click", () => openLightbox(img));
+      img.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(img); }
+      });
+    });
+    lbClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !lightbox.hidden) closeLightbox();
+    });
+  }
+
   /* ---------------- Footer year ---------------- */
   const yr = document.querySelector("[data-year]");
   if (yr) yr.textContent = new Date().getFullYear();
