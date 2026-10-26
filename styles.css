@@ -492,6 +492,7 @@ h2 em { font-style: italic; font-weight: 500; color: var(--red); }
 .room:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
 .room__art { border-bottom: 1px solid #eee4d0; }
 .room__art svg { display: block; width: 100%; height: auto; }
+.room__art img { display: block; width: 100%; aspect-ratio: 40 / 23; object-fit: cover; }
 .room__body { padding: 1.3rem 1.3rem 1.5rem; display: flex; flex-direction: column; gap: 0.7rem; flex: 1; }
 .room__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.6rem; }
 .room__top h3 { font-size: 1.28rem; }
