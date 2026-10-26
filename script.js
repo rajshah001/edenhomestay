@@ -69,7 +69,7 @@ const WHATSAPP_NUMBER = "919064810826"; // Eden's WhatsApp Business (India +91)
     if (numberReady()) {
       // turn it into a plain new-tab link — the browser handles everything
       // natively (new tab, site stays open), no popup blockers involved
-      el.href = waUrl(el.getAttribute("data-wa-text") || "Hi Eden! I'd like to plan a stay. 🏡");
+      el.href = waUrl(el.getAttribute("data-wa-text") || "Hi Eden! I'd like to plan a stay.");
       el.target = "_blank";
       el.rel = "noopener";
     } else {
@@ -139,10 +139,10 @@ const WHATSAPP_NUMBER = "919064810826"; // Eden's WhatsApp Business (India +91)
           month: "short",
           year: "numeric",
         });
-      let msg = "Hi Eden! I'd like to check availability 🗓️";
-      if (waIn.value) msg += "\n▪ Check-in: " + fmt(waIn.value);
-      if (waOut.value) msg += "\n▪ Check-out: " + fmt(waOut.value);
-      msg += "\n▪ Guests: " + waGuests.value + " · Room: " + waRoom.value;
+      let msg = "Hi Eden! I'd like to check availability.";
+      if (waIn.value) msg += "\n- Check-in: " + fmt(waIn.value);
+      if (waOut.value) msg += "\n- Check-out: " + fmt(waOut.value);
+      msg += "\n- Guests: " + waGuests.value + " · Room: " + waRoom.value;
       msg += "\nCould you confirm availability and tariff?";
       openWaLink(msg);
     });
